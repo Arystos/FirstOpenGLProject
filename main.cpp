@@ -110,7 +110,6 @@ int main()
 	// Create camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
 
-
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -137,9 +136,7 @@ int main()
 		// Take care of all GLFW events
 		glfwPollEvents();
 	}
-
-
-
+	
 	// Delete all the objects we've created
 	//pyramid->vao->Delete();
 	texture.Delete();

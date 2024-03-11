@@ -12,7 +12,6 @@ layout (location = 2) in vec2 aTex;
 out vec3 color;
 // Outputs the texture coordinates to the fragment shader
 out vec2 texCoord;
-
 // Imports the camera matrix from the main function
 uniform mat4 camMatrix;
 

@@ -155,7 +155,6 @@
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ObjectLoader.cpp" />
     <ClCompile Include="pyramidMesh.cpp" />
     <ClCompile Include="shaderClass.cpp" />
     <ClCompile Include="stb.cpp" />
@@ -170,7 +169,6 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="EBO.h" />
-    <ClInclude Include="ObjectLoader.h" />
     <ClInclude Include="pyramidMesh.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="Texture.h" />
