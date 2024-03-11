@@ -13,6 +13,7 @@ public:
 	void Bind();
 	void Unbind();
 	void Delete();
+	void Create(GLuint* vertices, size_t size);
 };
 
 

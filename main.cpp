@@ -12,12 +12,13 @@
 #include"VBO.h"
 #include"EBO.h"
 #include"Camera.h"
+#include"PyramidMesh.h"
 
 // Constants
 const unsigned int width = 800;
 const unsigned int height = 800;
 
-
+/*
 // Vertices coordinates
 GLfloat vertices[] =
 { //     COORDINATES     /        COLORS      /   TexCoord  //
@@ -38,7 +39,9 @@ GLuint indices[] =
 	2, 3, 4,
 	3, 0, 4
 };
+*/
 
+//PyramidMesh pyramid;
 
 int main()
 {
@@ -71,13 +74,10 @@ int main()
 	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
 	glViewport(0, 0, width, height);
 
-
-
 	// Generates Shader object using shaders default.vert and default.frag
 	Shader shaderProgram("default.vert", "default.frag");
-
-
-
+	
+	/*
 	// Generates Vertex Array Object and binds it
 	VAO VAO1;
 	VAO1.Bind();
@@ -95,12 +95,15 @@ int main()
 	VAO1.Unbind();
 	VBO1.Unbind();
 	EBO1.Unbind();
+	*/
+
+	PyramidMesh* pyramid = new PyramidMesh();
+	pyramid->CreateMesh();
 	
 	// get the Texture from the folder Texture named dirt.png
 	Texture texture("Textures/dirt.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
 	// Set the texture wrapping/filtering options (on the currently bound texture object)
 	texture.texUnit(shaderProgram, "tex0", 0);
-
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
 
@@ -124,10 +127,11 @@ int main()
 		
 		// Binds texture so that is appears in rendering
 		texture.Bind();
-		// Bind the VAO so OpenGL knows to use it
-		VAO1.Bind();
+		// Bind the pyramid's VAO
+		pyramid->vao->Bind();
+		// Draw the pyramid
 		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(int), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, pyramid->GetIndices(), GL_UNSIGNED_INT, 0);
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
@@ -137,9 +141,7 @@ int main()
 
 
 	// Delete all the objects we've created
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
+	//pyramid->vao->Delete();
 	texture.Delete();
 	shaderProgram.Delete();
 	// Delete window before ending the program

@@ -2,6 +2,8 @@ C:\Developer\Cpp\OpenGLProject\Camera.cpp;C:\Developer\Cpp\OpenGLProject\OpenGLP
 C:\Developer\Cpp\OpenGLProject\EBO.cpp;C:\Developer\Cpp\OpenGLProject\OpenGLProject\x64\Debug\EBO.obj
 C:\Developer\Cpp\OpenGLProject\glad.c;C:\Developer\Cpp\OpenGLProject\OpenGLProject\x64\Debug\glad.obj
 C:\Developer\Cpp\OpenGLProject\main.cpp;C:\Developer\Cpp\OpenGLProject\OpenGLProject\x64\Debug\main.obj
+C:\Developer\Cpp\OpenGLProject\ObjectLoader.cpp;C:\Developer\Cpp\OpenGLProject\OpenGLProject\x64\Debug\ObjectLoader.obj
+C:\Developer\Cpp\OpenGLProject\pyramidMesh.cpp;C:\Developer\Cpp\OpenGLProject\OpenGLProject\x64\Debug\pyramidMesh.obj
 C:\Developer\Cpp\OpenGLProject\shaderClass.cpp;C:\Developer\Cpp\OpenGLProject\OpenGLProject\x64\Debug\shaderClass.obj
 C:\Developer\Cpp\OpenGLProject\stb.cpp;C:\Developer\Cpp\OpenGLProject\OpenGLProject\x64\Debug\stb.obj
 C:\Developer\Cpp\OpenGLProject\Texture.cpp;C:\Developer\Cpp\OpenGLProject\OpenGLProject\x64\Debug\Texture.obj

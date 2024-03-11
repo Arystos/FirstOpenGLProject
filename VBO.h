@@ -14,6 +14,7 @@ class VBO
 		void Bind();
 		void Unbind();
 		void Delete();
+		void Create(GLfloat* vertices, GLsizeiptr size);
 };
 
 

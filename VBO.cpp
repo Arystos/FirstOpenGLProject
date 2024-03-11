@@ -14,6 +14,14 @@ void VBO::Bind()
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
 }
 
+// Creates the VBO
+void VBO::Create(GLfloat* vertices, GLsizeiptr size)
+{
+	glGenBuffers(1, &ID);
+	glBindBuffer(GL_ARRAY_BUFFER, ID);
+	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+}
+
 // Unbinds the VBO
 void VBO::Unbind()
 {
