@@ -14,54 +14,6 @@
 #include"EBO.h"
 #include"Camera.h"
 
-GLfloat vertices[] =
-{ //     COORDINATES     /        COLORS      /   TexCoord  //
-    -0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
-    -0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 1.0f,
-     0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	1.0f, 1.0f,
-     0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	1.0f, 0.0f,
-     0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	0.5f, 0.5f
-};
-
-// Indices for the vertices
-GLuint indices[] =
-{
-    0, 1, 2,
-    0, 2, 3,
-    0, 1, 4,
-    1, 2, 4,
-    2, 3, 4,
-    3, 0, 4
-};
-
-GLfloat lightVertices[] =
-{ //     COORDINATES     //
-    -0.1f, -0.1f,  0.1f,
-    -0.1f, -0.1f, -0.1f,
-     0.1f, -0.1f, -0.1f,
-     0.1f, -0.1f,  0.1f,
-    -0.1f,  0.1f,  0.1f,
-    -0.1f,  0.1f, -0.1f,
-     0.1f,  0.1f, -0.1f,
-     0.1f,  0.1f,  0.1f
-};
-
-GLuint lightIndices[] =
-{
-    0, 1, 2,
-    0, 2, 3,
-    0, 4, 7,
-    0, 7, 3,
-    3, 7, 6,
-    3, 6, 2,
-    2, 6, 5,
-    2, 5, 1,
-    1, 5, 4,
-    1, 4, 0,
-    4, 5, 6,
-    4, 6, 7
-};
-
 ObjectMesh::ObjectMesh(Shader shaderProgram, Texture texture): shaderProgram(shaderProgram), texture(texture)
 {
     this->shaderProgram = shaderProgram;
@@ -77,14 +29,13 @@ ObjectMesh::~ObjectMesh()
     shaderProgram.Delete();
 }
 
-void ObjectMesh::CreateMesh()
+void ObjectMesh::CreateMesh(GLfloat* vertices, GLsizeiptr verticesSize, GLuint* indices, GLsizeiptr indicesSize)
 {
     // Bind the VAO
     vao->Bind();
+    VBO vbo = VBO(vertices, verticesSize);
+    EBO ebo = EBO(indices, indicesSize);
 
-    VBO vbo = VBO(vertices, sizeof(vertices));
-    EBO ebo = EBO(indices, sizeof(indices));
-    
     // Links vbo attributes to vao
     // Position of the cube
     vao->LinkAttrib(vbo, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
@@ -102,16 +53,37 @@ void ObjectMesh::CreateMesh()
     ebo.Unbind();
 }
 
-void ObjectMesh::RenderMesh()
+void ObjectMesh::RenderMesh(GLsizei size)
 {
     // Render the object mesh
     
     // Activate the shader program
-    shaderProgram.Activate();
+    try
+    {
+        shaderProgram.Activate();
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
     // Bind the texture
-    texture.Bind();
+    try
+    {
+        texture.Bind();
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
     // Bind the object VAO
     vao->Bind();
     // Draw the object
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    try
+    {
+        glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
 }

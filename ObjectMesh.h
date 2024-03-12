@@ -9,12 +9,12 @@
 class ObjectMesh
 {
 public:
-    ObjectMesh(Shader shaderProgram, Texture texture);
+    ObjectMesh(Shader shaderProgram, Texture texture );
     ~ObjectMesh();
 
-    void CreateMesh();
-    void RenderMesh();
-    
+    void CreateMesh(GLfloat* vertices, GLsizeiptr verticesSize, GLuint* indices, GLsizeiptr indicesSize);
+    void RenderMesh(GLsizei size);
+
 private:
     Shader shaderProgram;
     Texture texture;

@@ -176,10 +176,8 @@
     <ClInclude Include="VBO.h" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Objects\indices.txt" />
-    <Content Include="Objects\lightIndices.txt" />
-    <Content Include="Objects\lightVertices" />
-    <Content Include="Objects\vertices.txt" />
+    <Content Include="light.frag" />
+    <Content Include="light.vert" />
     <Content Include="Textures\dirt.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
