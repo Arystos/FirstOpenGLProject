@@ -25,7 +25,7 @@ uniform vec3 camPos;
 void main()
 {
 	// Ambient
-	float ambient = 0.2;
+	float ambient = 0.3;
 	vec3 normal = normalize(Normal);
 	vec3 lightDir = normalize(lightPos - crntPos);
 	float diffuse = max(dot(normal, lightDir), 0.0);

@@ -175,7 +175,11 @@ int main()
 		// Draw the pyramid
 		pyramidObject->RenderMesh(camera, sizeof(indices)/sizeof(int));
 		
-		//lightObject->MoveObject(glm::vec3(1.0f, 0.0f, 0.0f), 1.0);
+		// Orbit the light object on the y axis
+		lightObject->OrbitObject(glm::vec3(0.0f, 0.5f, 0.0f), 1.0f, 0.5f);
+
+		// Set light position
+		pyramidObject->SetLightPosition(lightObject->currentPosition);
 		
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);

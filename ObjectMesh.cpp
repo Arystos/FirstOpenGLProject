@@ -104,11 +104,11 @@ void ObjectMesh::SpawnObject(char type, glm::vec3 position, glm::vec3 scale, glm
     // Set the model matrix in the shader
     shaderProgram.Activate();
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    glUniform4fv(glGetUniformLocation(shaderProgram.ID, "lightColor"), 1, glm::value_ptr(lightColor));
+    SetLightColor(lightColor);
 
     if (type != LIGHT)
     {
-        glUniform3fv(glGetUniformLocation(shaderProgram.ID, "lightPos"), 1, glm::value_ptr(lightPos));
+        SetLightPosition(position);
     }
 
     // Set the current position to the spawn position
@@ -136,9 +136,36 @@ void ObjectMesh::MoveObject(glm::vec3 direction, float speed)
     currentPosition = newPosition;
 }
 
+void ObjectMesh::OrbitObject(glm::vec3 center, float radius, float speed)
+{
+    // Calculate the new position
+    glm::vec3 newPosition;
+    newPosition.x = center.x + radius * cos(glfwGetTime() * speed);
+    newPosition.y = center.y;
+    newPosition.z = center.z + radius * sin(glfwGetTime() * speed);
+
+    // Create the model matrix
+    glm::mat4 model = glm::mat4(1.0f); // Set to identity
+    model = glm::translate(model, newPosition); // Change the position of the object
+
+    // Set the model matrix in the shader
+    shaderProgram.Activate();
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+    // Update the current position
+    currentPosition = newPosition;
+}
+
 void ObjectMesh::SetLightPosition(glm::vec3 vec)
 {
     // Set the light position in the shader
     shaderProgram.Activate();
     glUniform3fv(glGetUniformLocation(shaderProgram.ID, "lightPos"), 1, glm::value_ptr(vec));
+}
+
+void ObjectMesh::SetLightColor(glm::vec4 vec)
+{
+    // Set the light color in the shader
+    shaderProgram.Activate();
+    glUniform4fv(glGetUniformLocation(shaderProgram.ID, "lightColor"), 1, glm::value_ptr(vec));
 }
