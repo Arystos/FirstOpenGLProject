@@ -14,7 +14,7 @@
 #include"EBO.h"
 #include"Camera.h"
 
-GLfloat vertices[60] =
+GLfloat vertices[] =
 { //     COORDINATES     /        COLORS      /   TexCoord  //
     -0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
     -0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 1.0f,
@@ -24,7 +24,7 @@ GLfloat vertices[60] =
 };
 
 // Indices for the vertices
-GLuint indices[18] =
+GLuint indices[] =
 {
     0, 1, 2,
     0, 2, 3,

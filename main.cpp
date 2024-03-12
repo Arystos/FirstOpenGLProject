@@ -51,13 +51,13 @@ int main()
 
 	// Create the pyramid
 	// Initialize the shader program
-	Shader pyramidShader("default.vert", "default.frag");
+	Shader cubeShader("default.vert", "default.frag");
 	// Initialize the texture
-	Texture pyramidTexture("Textures/dirt.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
+	Texture cubeTexture("Textures/dirt.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
 	// Create the pyramid object
-	ObjectMesh* pyramidObject = new ObjectMesh(pyramidShader, pyramidTexture);
+	ObjectMesh* cubeObject = new ObjectMesh(cubeShader, cubeTexture);
 	// Create the pyramid mesh
-	pyramidObject->CreateMesh();
+	cubeObject->CreateMesh();
 
 	// Create camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
@@ -71,18 +71,18 @@ int main()
 		// Clean the back buffer and assign the new color to it
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Tell OpenGL which Shader Program we want to use
-		pyramidShader.Activate();
+		cubeShader.Activate();
 
 		camera.Inputs(window);
 		// Update camera
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
 		// Update camera matrix
-		camera.Matrix(pyramidShader, "camMatrix");
+		camera.Matrix(cubeShader, "camMatrix");
 		
 		// Binds texture so that is appears in rendering
-		pyramidTexture.Bind();
+		cubeTexture.Bind();
 		// Draw the pyramid
-		pyramidObject->RenderMesh();
+		cubeObject->RenderMesh();
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
