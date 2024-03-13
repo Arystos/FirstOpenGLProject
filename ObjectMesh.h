@@ -11,22 +11,21 @@
 class ObjectMesh
 {
 public:
-    ObjectMesh(Shader shaderProgram, Texture texture );
+    ObjectMesh(Shader shaderProgram, Texture texture);
     ~ObjectMesh();
 
-    void CreateMesh(GLfloat* vertices, char type, GLsizeiptr verticesSize, GLuint* indices, GLsizeiptr indicesSize);
+    void CreateMesh(char type, GLfloat* vertices, GLsizeiptr verticesSize, GLuint* indices, GLsizeiptr indicesSize);
     void RenderMesh(Camera camera, GLsizei size);
-    void SpawnObject(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation);
-    void Translate(glm::vec3 position);
-    
+    void SpawnObject(char type, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation);
+    void MoveObject(glm::vec3 direction, float speed);
+
+    void SetLightPosition(glm::vec3 vec);
 
 private:
     Shader shaderProgram;
     Texture texture;
     VAO* vao;
-    
-    // Create the pyramid mesh
-    // Vertices for the pyramid
+    glm::vec3 currentPosition;
 
 };
 

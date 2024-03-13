@@ -1,5 +1,4 @@
 #include<iostream>
-#include <thread>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<stb/stb_image.h>
@@ -10,34 +9,48 @@
 #include"Texture.h"
 #include"shaderClass.h"
 #include"Camera.h"
-#include "EBO.h"
 #include"ObjectMesh.h"
 
 // Constants
-const unsigned int width = 800;
-const unsigned int height = 800;
+constexpr unsigned int width = 800;
+constexpr unsigned int height = 800;
+constexpr char PYRAMID = 0;
+constexpr char LIGHT = 1;
 
-const char PYRAMID = 0;
-const char LIGHT = 1;
-
+// Vertices coordinates
 GLfloat vertices[] =
-{ //     COORDINATES     /        COLORS      /   TexCoord  //
-	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
-	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 1.0f,
-	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	1.0f, 1.0f,
-	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	1.0f, 0.0f,
-	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	0.5f, 0.5f
+{ //     COORDINATES     /        COLORS          /    TexCoord   /        NORMALS       //
+	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 5.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 5.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, -1.0f, 0.0f, // Bottom side
+
+	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,     -0.8f, 0.5f,  0.0f, // Left Side
+	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,     -0.8f, 0.5f,  0.0f, // Left Side
+	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,     -0.8f, 0.5f,  0.0f, // Left Side
+
+	-0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
+	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
+	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.0f, 0.5f, -0.8f, // Non-facing side
+
+	 0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	 0.0f, 0.0f,      0.8f, 0.5f,  0.0f, // Right side
+	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.8f, 0.5f,  0.0f, // Right side
+	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.8f, 0.5f,  0.0f, // Right side
+
+	 0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	 5.0f, 0.0f,      0.0f, 0.5f,  0.8f, // Facing side
+	-0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f, 	 0.0f, 0.0f,      0.0f, 0.5f,  0.8f, // Facing side
+	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.0f, 0.5f,  0.8f  // Facing side
 };
 
-// Indices for the vertices
+// Indices for vertices order
 GLuint indices[] =
 {
-	0, 1, 2,
-	0, 2, 3,
-	0, 1, 4,
-	1, 2, 4,
-	2, 3, 4,
-	3, 0, 4
+	0, 1, 2, // Bottom side
+	0, 2, 3, // Bottom side
+	4, 6, 5, // Left side
+	7, 9, 8, // Non-facing side
+	10, 12, 11, // Right side
+	13, 15, 14 // Facing side
 };
 
 GLfloat lightVertices[] =
@@ -86,7 +99,7 @@ int main()
 	// Error check if the window fails to create
 	if (window == NULL)
 	{
-		std::cout << "Failed to create GLFW window" << std::endl;
+		std::cout << "Failed to create GLFW window" << '\n';
 		glfwTerminate();
 		return -1;
 	}
@@ -110,42 +123,30 @@ int main()
 	// Create the pyramid object
 	ObjectMesh* pyramidObject = new ObjectMesh(pyramidShader, pyramidTexture);
 	// Create the pyramid mesh
-	pyramidObject->CreateMesh(vertices, PYRAMID, sizeof(vertices), indices, sizeof(indices));
+	pyramidObject->CreateMesh(PYRAMID, vertices, sizeof(vertices), indices, sizeof(indices));
 
-	// TODO: Initialize the light
+	// Create the light
 	// Initialize the shader program
 	Shader lightShader("light.vert", "light.frag");
 	// Create the light object
 	ObjectMesh* lightObject = new ObjectMesh(lightShader, pyramidTexture);
 	// Create the light mesh
-	lightObject->CreateMesh(lightVertices, LIGHT, sizeof(lightVertices), lightIndices, sizeof(lightIndices));
+	lightObject->CreateMesh(LIGHT, lightVertices, sizeof(lightVertices), lightIndices, sizeof(lightIndices));
 
-	/*
-	// Create the model matrix
-	glm::vec3 lightPos(0.5f, 0.5f, 0.5f); // Position of the light source
-	glm::mat4 lightModel = glm::mat4(1.0f); // Set to identity
-	lightModel = glm::translate(lightModel, lightPos); // Change the position of the light source
+	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
 
-	glm::vec3 pyramidPos(0.0f, 0.0f, 0.0f); // Position of the pyramid
-	glm::mat4 pyramidModel = glm::mat4(1.0f); // Set to identity
-	pyramidModel = glm::translate(pyramidModel, pyramidPos); // Change the position of the pyramid
-
-	lightShader.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel)); // Set the model matrix in the shader
-	pyramidShader.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(pyramidShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
-	*/
-
-	// Spawn the pyramid
-	pyramidObject->SpawnObject(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f));
 	// Spawn the light
-	lightObject->SpawnObject(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f), glm::vec3(0.0f));
+	lightObject->SpawnObject(LIGHT, lightPos, glm::vec3(1.0f), glm::vec3(0.0f));
+	// Spawn the pyramid
+	pyramidObject->SpawnObject(PYRAMID, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f));
 	
+	// Pass the light position to the fragment shader
+	pyramidObject->SetLightPosition(lightPos);
 
+	
 	// Create camera object
 	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
-
-
+	
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -157,6 +158,13 @@ int main()
 		camera.Inputs(window);
 		// Update camera
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
+
+		// Tells OpenGL to use the light shader program
+		lightShader.Activate();
+		// Export the camMatrix to the Vertex Shader of the light cube
+		camera.Matrix(lightShader, "camMatrix");
+		// Bind the VAO so OpenGL knows to use it
+		lightObject->RenderMesh(camera, sizeof(lightIndices) / sizeof(int));
 		
 		// Use the shader program
 		pyramidShader.Activate();
@@ -166,25 +174,8 @@ int main()
 		pyramidTexture.Bind();
 		// Draw the pyramid
 		pyramidObject->RenderMesh(camera, sizeof(indices)/sizeof(int));
-
-		// TODO: Create the rendering for the light
-		// Tells OpenGL which Shader Program we want to use
-		lightShader.Activate();
-		// Export the camMatrix to the Vertex Shader of the light cube
-		camera.Matrix(lightShader, "camMatrix");
-		// Bind the VAO so OpenGL knows to use it
-		lightObject->RenderMesh(camera, sizeof(lightIndices) / sizeof(int));
-
-		// get light position
-		glm::vec3 lightPos(0.5f, 0.5f, 0.5f);
-
-		// Update the light's position
-		double time = glfwGetTime();
-		lightPos.x = sin(time) * 2.0f;
-		lightPos.z = cos(time) * 2.0f;
-
-		// Spawn the light at the new position
-		lightObject->SpawnObject(lightPos, glm::vec3(1.0f), glm::vec3(0.0f));
+		
+		//lightObject->MoveObject(glm::vec3(1.0f, 0.0f, 0.0f), 1.0);
 		
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
@@ -192,11 +183,9 @@ int main()
 		glfwPollEvents();
 	}
 
-
-
-	// Delete all the objects we've created
-	//pyramidTexture.Delete();
-	//pyramidShader.Delete();
+	// Delete the objects
+	pyramidObject->~ObjectMesh();
+	lightObject->~ObjectMesh();
 	
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
