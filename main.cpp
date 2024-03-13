@@ -1,4 +1,5 @@
 #include<iostream>
+#include <thread>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<stb/stb_image.h>
@@ -15,6 +16,9 @@
 // Constants
 const unsigned int width = 800;
 const unsigned int height = 800;
+
+const char PYRAMID = 0;
+const char LIGHT = 1;
 
 GLfloat vertices[] =
 { //     COORDINATES     /        COLORS      /   TexCoord  //
@@ -37,15 +41,15 @@ GLuint indices[] =
 };
 
 GLfloat lightVertices[] =
-{ //     COORDINATES     //
-	-0.1f, -0.1f,  0.1f,
-	-0.1f, -0.1f, -0.1f,
-	 0.1f, -0.1f, -0.1f,
-	 0.1f, -0.1f,  0.1f,
-	-0.1f,  0.1f,  0.1f,
-	-0.1f,  0.1f, -0.1f,
-	 0.1f,  0.1f, -0.1f,
-	 0.1f,  0.1f,  0.1f
+{ //     COORDINATES
+	-0.1f, -0.1f,  0.1f, 	
+	-0.1f, -0.1f, -0.1f, 	
+	 0.1f, -0.1f, -0.1f, 	
+	 0.1f, -0.1f,  0.1f, 	
+	-0.1f,  0.1f,  0.1f, 	
+	-0.1f,  0.1f, -0.1f, 	
+	 0.1f,  0.1f, -0.1f, 	
+	 0.1f,  0.1f,  0.1f 	
 };
 
 GLuint lightIndices[] =
@@ -106,25 +110,17 @@ int main()
 	// Create the pyramid object
 	ObjectMesh* pyramidObject = new ObjectMesh(pyramidShader, pyramidTexture);
 	// Create the pyramid mesh
-	pyramidObject->CreateMesh(vertices, sizeof(vertices), indices, sizeof(indices));
+	pyramidObject->CreateMesh(vertices, PYRAMID, sizeof(vertices), indices, sizeof(indices));
 
 	// TODO: Initialize the light
 	// Initialize the shader program
 	Shader lightShader("light.vert", "light.frag");
-	// Generates Vertex Array Object and binds it
-	VAO lightVAO;
-	lightVAO.Bind();
-	// Generates Vertex Buffer Object and links it to vertices
-	VBO lightVBO(lightVertices, sizeof(lightVertices));
-	// Generates Element Buffer Object and links it to indices
-	EBO lightEBO(lightIndices, sizeof(lightIndices));
-	// Links VBO attributes such as coordinates and colors to VAO
-	lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-	// Unbind all to prevent accidentally modifying them
-	lightVAO.Unbind();
-	lightVBO.Unbind();
-	lightEBO.Unbind();
+	// Create the light object
+	ObjectMesh* lightObject = new ObjectMesh(lightShader, pyramidTexture);
+	// Create the light mesh
+	lightObject->CreateMesh(lightVertices, LIGHT, sizeof(lightVertices), lightIndices, sizeof(lightIndices));
 
+	/*
 	// Create the model matrix
 	glm::vec3 lightPos(0.5f, 0.5f, 0.5f); // Position of the light source
 	glm::mat4 lightModel = glm::mat4(1.0f); // Set to identity
@@ -137,7 +133,13 @@ int main()
 	lightShader.Activate();
 	glUniformMatrix4fv(glGetUniformLocation(lightShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(lightModel)); // Set the model matrix in the shader
 	pyramidShader.Activate();
-	glUniformMatrix4fv(glGetUniformLocation(pyramidShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel)); 
+	glUniformMatrix4fv(glGetUniformLocation(pyramidShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(pyramidModel));
+	*/
+
+	// Spawn the pyramid
+	pyramidObject->SpawnObject(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f));
+	// Spawn the light
+	lightObject->SpawnObject(glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f), glm::vec3(0.0f));
 	
 
 	// Create camera object
@@ -163,7 +165,7 @@ int main()
 		// Binds texture so that is appears in rendering
 		pyramidTexture.Bind();
 		// Draw the pyramid
-		pyramidObject->RenderMesh(sizeof(indices)/sizeof(int));
+		pyramidObject->RenderMesh(camera, sizeof(indices)/sizeof(int));
 
 		// TODO: Create the rendering for the light
 		// Tells OpenGL which Shader Program we want to use
@@ -171,9 +173,18 @@ int main()
 		// Export the camMatrix to the Vertex Shader of the light cube
 		camera.Matrix(lightShader, "camMatrix");
 		// Bind the VAO so OpenGL knows to use it
-		lightVAO.Bind();
-		// Draw primitives, number of indices, datatype of indices, index of indices
-		glDrawElements(GL_TRIANGLES, sizeof(lightIndices) / sizeof(int), GL_UNSIGNED_INT, 0);
+		lightObject->RenderMesh(camera, sizeof(lightIndices) / sizeof(int));
+
+		// get light position
+		glm::vec3 lightPos(0.5f, 0.5f, 0.5f);
+
+		// Update the light's position
+		double time = glfwGetTime();
+		lightPos.x = sin(time) * 2.0f;
+		lightPos.z = cos(time) * 2.0f;
+
+		// Spawn the light at the new position
+		lightObject->SpawnObject(lightPos, glm::vec3(1.0f), glm::vec3(0.0f));
 		
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);

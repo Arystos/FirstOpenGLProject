@@ -6,5 +6,5 @@ uniform vec4 lightColor;
 
 void main()
 {
-    FragColor = lightColor;
+    FragColor = vec4(1.0f); // Set the color to white
 }
