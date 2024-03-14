@@ -87,6 +87,12 @@ void ObjectMesh::RenderMesh(Camera camera, GLsizei size)
     glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 }
 
+void ObjectMesh::RotateObject(glm::vec3 rotation, float speed, float angle)
+{
+    // TODO: Implement the rotation of the object
+}
+
+
 // Function to spawn the object at a certain position
 void ObjectMesh::SpawnObject(char type, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation)
 {
@@ -146,7 +152,7 @@ void ObjectMesh::OrbitObject(glm::vec3 center, float radius, float speed)
 
     // Create the model matrix
     glm::mat4 model = glm::mat4(1.0f); // Set to identity
-    model = glm::translate(model, newPosition); // Change the position of the object
+    model = translate(model, newPosition); // Change the position of the object
 
     // Set the model matrix in the shader
     shaderProgram.Activate();

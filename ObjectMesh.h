@@ -20,6 +20,7 @@ public:
     void MoveObject(glm::vec3 direction, float speed);
     void OrbitObject(glm::vec3 center, float radius, float speed);
     void RenderMesh(Camera camera, GLsizei size);
+    void RotateObject(glm::vec3 rotation, float speed, float angle);
     void SetLightPosition(glm::vec3 vec);
     void SetLightColor(glm::vec4 vec);
     void SpawnObject(char type, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation);
