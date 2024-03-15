@@ -47,7 +47,7 @@ GLuint indices[] =
 {
 	0, 1, 2, // Bottom side
 	0, 2, 3, // Bottom side
-	4, 6, 5, // Left side
+	4, 6, 5, // Left sideki
 	7, 9, 8, // Non-facing side
 	10, 12, 11, // Right side
 	13, 15, 14 // Facing side
@@ -145,7 +145,7 @@ int main()
 
 	
 	// Create camera object
-	Camera camera(width, height, glm::vec3(0.0f, 0.0f, 2.0f));
+	Camera camera(width, height, glm::vec3(0.0f, 0.5f, 3.0f));
 	
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
