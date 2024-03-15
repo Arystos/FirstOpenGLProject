@@ -18,8 +18,8 @@
 constexpr char PYRAMID = 0;
 constexpr char LIGHT = 1;
 
-ObjectMesh::ObjectMesh(Shader shaderProgram, Texture texture)
-    : shaderProgram(shaderProgram), texture(texture), currentPosition(glm::vec3(0.0f, 0.0f, 0.0f))
+ObjectMesh::ObjectMesh(Shader& shaderProgram, Texture& texture)
+    : currentPosition(glm::vec3(0.0f, 0.0f, 0.0f)), shaderProgram(shaderProgram), texture(texture)
 {
     this->shaderProgram = shaderProgram;
     this->texture = texture;
@@ -51,7 +51,7 @@ void ObjectMesh::CreateMesh(char type, GLfloat* vertices, GLsizeiptr verticesSiz
         vao->LinkAttrib(vbo, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float))); // Normals of the cube
 
         // Set the texture wrapping/filtering options (on the currently bound texture object)
-        texture.texUnit(shaderProgram, "tex0", 0);
+        //texture.texUnit(shaderProgram, "tex0", 0);
     }
     else if (type == LIGHT) // Light
     {
@@ -71,7 +71,7 @@ void ObjectMesh::CreateMesh(char type, GLfloat* vertices, GLsizeiptr verticesSiz
     ebo.Unbind();
 }
 
-void ObjectMesh::RenderMesh(Camera camera, GLsizei size)
+void ObjectMesh::RenderMesh(Camera& camera, GLsizei size)
 {
     // Render the object mesh
     // Activate the shader program

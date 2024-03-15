@@ -11,7 +11,7 @@
 class ObjectMesh
 {
 public:
-    ObjectMesh(Shader shaderProgram, Texture texture);
+    ObjectMesh(Shader& shaderProgram, Texture& texture);
     ~ObjectMesh();
 
     glm::vec3 currentPosition;
@@ -19,7 +19,7 @@ public:
     void CreateMesh(char type, GLfloat* vertices, GLsizeiptr verticesSize, GLuint* indices, GLsizeiptr indicesSize);
     void MoveObject(glm::vec3 direction, float speed);
     void OrbitObject(glm::vec3 center, float radius, float speed);
-    void RenderMesh(Camera camera, GLsizei size);
+    void RenderMesh(Camera& camera, GLsizei size);
     void RotateObject(glm::vec3 rotation, float speed, float angle);
     void SetLightPosition(glm::vec3 vec);
     void SetLightColor(glm::vec4 vec);
