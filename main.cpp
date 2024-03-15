@@ -136,7 +136,7 @@ int main()
 	// Create the light mesh
 	lightObject->CreateMesh(LIGHT, lightVertices, sizeof(lightVertices), lightIndices, sizeof(lightIndices));
 
-	glm::vec3 lightPos = glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	// Spawn the light
 	lightObject->SpawnObject(LIGHT, lightPos, glm::vec3(1.0f), glm::vec3(0.0f));
@@ -180,7 +180,7 @@ int main()
 		pyramidObject->RenderMesh(camera, sizeof(indices)/sizeof(int));
 		
 		// Orbit the light object on the y axis
-		lightObject->OrbitObject(glm::vec3(0.0f, 0.5f, 0.0f), 1.0f, 0.5f);
+		//lightObject->OrbitObject(glm::vec3(0.0f, 1.5f, 0.0f), 1.5f, 0.5f);
 
 		// Set light position
 		pyramidObject->SetLightPosition(lightObject->currentPosition);
