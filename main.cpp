@@ -120,6 +120,9 @@ int main()
 	Shader pyramidShader("default.vert", "default.frag");
 	// Initialize the texture
 	Texture pyramidTexture("Textures/dirt.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
+	Texture pyramidTextureSpecular("Textures/dirtSpecular.png", GL_TEXTURE_2D, GL_TEXTURE1, GL_RED, GL_UNSIGNED_BYTE);
+	pyramidTexture.texUnit(pyramidShader, "tex0", 0);
+	pyramidTextureSpecular.texUnit(pyramidShader, "tex1", 1);
 	// Create the pyramid object
 	ObjectMesh* pyramidObject = new ObjectMesh(pyramidShader, pyramidTexture);
 	// Create the pyramid mesh
@@ -172,6 +175,7 @@ int main()
 		camera.Matrix(pyramidShader, "camMatrix");
 		// Binds texture so that is appears in rendering
 		pyramidTexture.Bind();
+		pyramidTextureSpecular.Bind();
 		// Draw the pyramid
 		pyramidObject->RenderMesh(camera, sizeof(indices)/sizeof(int));
 		

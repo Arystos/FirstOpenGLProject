@@ -5,38 +5,41 @@ out vec4 FragColor;
 
 
 // Inputs the color from the Vertex Shader
-in vec3 color;
-// Inputs the texture coordinates from the Vertex Shader
-in vec2 texCoord;
-
-in vec3 Normal;
 in vec3 crntPos;
+in vec3 color;
+in vec2 texCoord;
+in vec3 Normal;
+
 
 // Gets the Texture Unit from the main function
 uniform sampler2D tex0;
+uniform sampler2D tex1;
 
+// Gets the light color and position from the main function
 uniform vec4 lightColor;
-
 uniform vec3 lightPos;
 
+// Gets the camera position from the main function
 uniform vec3 camPos;
 
 
 void main()
 {
 	// Ambient
-	float ambient = 0.3;
+	float ambient = 0.20f;
+	
+	// Diffuse
 	vec3 normal = normalize(Normal);
 	vec3 lightDir = normalize(lightPos - crntPos);
-	float diffuse = max(dot(normal, lightDir), 0.0);
+	float diffuse = max(dot(normal, lightDir), 0.0f);
 	
 	// Specular
-	float specularLight = 0.5;
+	float specularLight = 0.5f;
 	vec3 viewDirection = normalize(camPos - crntPos);
 	vec3 reflectDirection = reflect(-lightDir, normal);
-	float specAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 8);
+	float specAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 16);
 	float specular = specularLight * specAmount;
 	
 	// Outputs the color of the texture
-	FragColor = texture(tex0, texCoord) * lightColor * (diffuse + ambient + specular);
+	FragColor = texture(tex0, texCoord) * lightColor * (diffuse + ambient ) + texture(tex1, texCoord).r * specular;
 }

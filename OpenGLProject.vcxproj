@@ -179,6 +179,8 @@
     <Content Include="light.frag" />
     <Content Include="light.vert" />
     <Content Include="Textures\dirt.png" />
+    <Content Include="Textures\dirtNormal.png" />
+    <Content Include="Textures\dirtSpecular.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
