@@ -42,8 +42,32 @@ GLfloat vertices[] =
 	 0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	 2.5f, 5.0f,      0.0f, 0.5f,  0.8f  // Facing side
 };
 
+Vertex verticesV [] =
+{
+	Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)},
+	Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(0.0f, 5.0f), glm::vec3(0.0f, -1.0f, 0.0f)},
+	Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(5.0f, 5.0f), glm::vec3(0.0f, -1.0f, 0.0f)},
+	Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(5.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)},
+
+	Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.8f, 0.5f,  0.0f)},
+	Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(5.0f, 0.0f), glm::vec3(-0.8f, 0.5f,  0.0f)},
+	Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec2(2.5f, 5.0f), glm::vec3(-0.8f, 0.5f,  0.0f)},
+
+	Vertex{glm::vec3(-0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(5.0f, 0.0f), glm::vec3(0.0f, 0.5f, -0.8f)},
+	Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.5f, -0.8f)},
+	Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec2(2.5f, 5.0f), glm::vec3(0.0f, 0.5f, -0.8f)},
+
+	Vertex{glm::vec3(0.5f, 0.0f, -0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(0.0f, 0.0f), glm::vec3(0.8f, 0.5f,  0.0f)},
+	Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(5.0f, 0.0f), glm::vec3(0.8f, 0.5f,  0.0f)},
+	Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec2(2.5f, 5.0f), glm::vec3(0.8f, 0.5f,  0.0f)},
+
+	Vertex{glm::vec3(0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(5.0f, 0.0f), glm::vec3(0.0f, 0.5f,  0.8f)},
+	Vertex{glm::vec3(-0.5f, 0.0f,  0.5f), glm::vec3(0.83f, 0.70f, 0.44f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.5f,  0.8f)},
+	Vertex{glm::vec3(0.0f, 0.8f,  0.0f), glm::vec3(0.92f, 0.86f, 0.76f), glm::vec2(2.5f, 5.0f), glm::vec3(0.0f, 0.5f,  0.8f)}
+};
+
 // Indices for vertices order
-GLuint indices[] =
+GLuint indices[18] =
 {
 	0, 1, 2, // Bottom side
 	0, 2, 3, // Bottom side
@@ -63,6 +87,18 @@ GLfloat lightVertices[] =
 	-0.1f,  0.1f, -0.1f, 	
 	 0.1f,  0.1f, -0.1f, 	
 	 0.1f,  0.1f,  0.1f 	
+};
+
+Vertex lightVertiesV[]
+{
+	Vertex{glm::vec3(-0.1f, -0.1f,  0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3(-0.1f, -0.1f, -0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 5.0f)},
+	Vertex{glm::vec3(0.1f, -0.1f, -0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(5.0f, 5.0f)},
+	Vertex{glm::vec3(0.1f, -0.1f,  0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(5.0f, 0.0f)},
+	Vertex{glm::vec3(-0.1f,  0.1f,  0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f)},
+	Vertex{glm::vec3(-0.1f,  0.1f, -0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 5.0f)},
+	Vertex{glm::vec3(0.1f,  0.1f, -0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(5.0f, 5.0f)},
+	Vertex{glm::vec3(0.1f,  0.1f,  0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(5.0f, 0.0f)}
 };
 
 GLuint lightIndices[] =
@@ -124,17 +160,21 @@ int main()
 	pyramidTexture.texUnit(pyramidShader, "tex0", 0);
 	pyramidTextureSpecular.texUnit(pyramidShader, "tex1", 1);
 	// Create the pyramid object
-	ObjectMesh* pyramidObject = new ObjectMesh(pyramidShader, pyramidTexture);
+	std::vector<Vertex> verticesVector(std::begin(verticesV), std::end(verticesV));
+	std::vector<GLuint> indicesVector(std::begin(indices), std::end(indices));
+	ObjectMesh* pyramidObject = new ObjectMesh(verticesVector, indicesVector, pyramidShader, pyramidTexture);
 	// Create the pyramid mesh
-	pyramidObject->CreateMesh(PYRAMID, vertices, sizeof(vertices), indices, sizeof(indices));
+	pyramidObject->CreateMesh();
 
 	// Create the light
 	// Initialize the shader program
 	Shader lightShader("light.vert", "light.frag");
 	// Create the light object
-	ObjectMesh* lightObject = new ObjectMesh(lightShader, pyramidTexture);
+	std::vector<Vertex> lightVerticesVector(std::begin(lightVertiesV), std::end(lightVertiesV));
+	std::vector<GLuint> lightIndicesVector(std::begin(lightIndices), std::end(lightIndices));
+	ObjectMesh* lightObject = new ObjectMesh(lightVerticesVector, lightIndicesVector, lightShader, pyramidTexture);
 	// Create the light mesh
-	lightObject->CreateMesh(LIGHT, lightVertices, sizeof(lightVertices), lightIndices, sizeof(lightIndices));
+	lightObject->CreateMesh();
 
 	glm::vec3 lightPos = glm::vec3(0.0f, 1.0f, 0.0f);
 

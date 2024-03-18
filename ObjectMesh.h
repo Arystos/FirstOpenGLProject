@@ -5,18 +5,21 @@
 #include "shaderClass.h"
 #include "Texture.h"
 #include "Camera.h"
+#include <vector>
 
 #include"VAO.h"
 
 class ObjectMesh
 {
 public:
-    ObjectMesh(Shader& shaderProgram, Texture& texture);
+    ObjectMesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shaderProgram, Texture& texture);
     ~ObjectMesh();
 
     glm::vec3 currentPosition;
+    std::vector <Vertex> vertices;
+    std::vector <GLuint> indices;
 
-    void CreateMesh(char type, GLfloat* vertices, GLsizeiptr verticesSize, GLuint* indices, GLsizeiptr indicesSize);
+    void CreateMesh();
     void MoveObject(glm::vec3 direction, float speed);
     void OrbitObject(glm::vec3 center, float radius, float speed);
     void RenderMesh(Camera& camera, GLsizei size);

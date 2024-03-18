@@ -15,14 +15,18 @@
 #include"EBO.h"
 #include"Camera.h"
 
-constexpr char PYRAMID = 0;
+//constexpr char PYRAMID = 0;
 constexpr char LIGHT = 1;
 
-ObjectMesh::ObjectMesh(Shader& shaderProgram, Texture& texture)
-    : currentPosition(glm::vec3(0.0f, 0.0f, 0.0f)), shaderProgram(shaderProgram), texture(texture)
+ObjectMesh::ObjectMesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shaderProgram, Texture& texture)
+    : currentPosition(glm::vec3(0.0f)), vertices(vertices), indices(indices), shaderProgram(shaderProgram),
+      texture(texture)
 {
+    // Constructor
     this->shaderProgram = shaderProgram;
     this->texture = texture;
+    this->vertices = vertices;
+    this->indices = indices;
     vao = new VAO();
 }
 
@@ -34,36 +38,17 @@ ObjectMesh::~ObjectMesh()
     shaderProgram.Delete();
 }
 
-void ObjectMesh::CreateMesh(char type, GLfloat* vertices, GLsizeiptr verticesSize, GLuint* indices, GLsizeiptr indicesSize)
+void ObjectMesh::CreateMesh()
 {
     // Bind the VAO
     vao->Bind();
-    VBO vbo = VBO(vertices, verticesSize);
-    EBO ebo = EBO(indices, indicesSize);
+    VBO vbo(vertices);
+    EBO ebo(indices);
 
-    // if case for pyramid and light
-    if (type == PYRAMID) // Pyramid
-    {
-        // Links vbo attributes to vao
-        vao->LinkAttrib(vbo, 0, 3, GL_FLOAT, 11 * sizeof(float), (void*)0); // Position of the cube
-        vao->LinkAttrib(vbo, 1, 3, GL_FLOAT, 11 * sizeof(float), (void*)(3 * sizeof(float))); // Color of the cube
-        vao->LinkAttrib(vbo, 2, 2, GL_FLOAT, 11 * sizeof(float), (void*)(6 * sizeof(float))); // Texture coordinates of the cube
-        vao->LinkAttrib(vbo, 3, 3, GL_FLOAT, 11 * sizeof(float), (void*)(8 * sizeof(float))); // Normals of the cube
-
-        // Set the texture wrapping/filtering options (on the currently bound texture object)
-        //texture.texUnit(shaderProgram, "tex0", 0);
-    }
-    else if (type == LIGHT) // Light
-    {
-        // Links vbo to vao
-        vao->LinkAttrib(vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
-    }
-    else if (type == 2) // Cube
-    {
-        vao->LinkAttrib(vbo, 0, 3, GL_FLOAT, 8 * sizeof(float), (void*)0);
-        vao->LinkAttrib(vbo, 1, 3, GL_FLOAT, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        vao->LinkAttrib(vbo, 2, 2, GL_FLOAT, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    }
+    vao->LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0); // Position
+    vao->LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float))); // Color
+    vao->LinkAttrib(vbo, 2, 2, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float))); // Texture
+    vao->LinkAttrib(vbo, 3, 3, GL_FLOAT, sizeof(Vertex), (void*)(8 * sizeof(float))); // Normals
 
     // Unbind all to prevent accidentally modifying them
     vao->Unbind();
