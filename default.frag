@@ -32,10 +32,10 @@ vec4 pointLight()
 	float a = 3.0f;
 	float b = 0.7f;
 	// Light Intensity
-	float intensity = 1.0 / (a * distance * distance + b * distance + 1.0f);
+	float intensity = 3.5 / (a * distance * distance + b * distance + 1.0f);
 	
 	// Ambient
-	float ambient = 0.20f;
+	float ambient = 0.30f;
 
 	// Diffuse
 	vec3 normal = normalize(Normal);
@@ -62,7 +62,7 @@ vec4 directionalLight()
 	float a = 3.0f;
 	float b = 0.7f;
 	// Light Intensity
-	float intensity = 1.0 / (a * distance * distance + b * distance + 1.0f);
+	float intensity = 150.0 / (a * distance * distance + b * distance + 1.0f);
 
 	// Ambient
 	float ambient = 0.20f;
@@ -114,5 +114,5 @@ vec4 spotLight()
 void main()
 {
 	// Outputs the color of the texture
-	FragColor = spotLight();
+	FragColor = pointLight();
 }
