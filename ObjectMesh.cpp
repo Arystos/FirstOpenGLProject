@@ -18,23 +18,24 @@
 //constexpr char PYRAMID = 0;
 constexpr char LIGHT = 1;
 
-ObjectMesh::ObjectMesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shaderProgram, Texture& texture)
-    : currentPosition(glm::vec3(0.0f)), vertices(vertices), indices(indices), shaderProgram(shaderProgram),
-      texture(texture)
+ObjectMesh::ObjectMesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices,std::vector<Texture>& textures, Shader& shaderProgram)
+    : shaderProgram(shaderProgram), currentPosition(glm::vec3(0.0f)), vertices(vertices), indices(indices),
+      textures(textures)
 {
     // Constructor
-    this->shaderProgram = shaderProgram;
-    this->texture = texture;
-    this->vertices = vertices;
-    this->indices = indices;
+    //this->shaderProgram = shaderProgram;
+    //this->vertices = vertices;
+    //this->indices = indices;
     vao = new VAO();
+
+    CreateMesh();
 }
 
 ObjectMesh::~ObjectMesh()
 {
     // Destructor
     vao->Delete();
-    texture.Delete();
+    textures.clear();
     shaderProgram.Delete();
 }
 
@@ -63,8 +64,28 @@ void ObjectMesh::RenderMesh(Camera& camera, GLsizei size)
     shaderProgram.Activate();
     // Bind the object VAO
     vao->Bind();
-    // Bind the texture
-    texture.Bind();
+    
+    // Load the texture
+    unsigned int numDiffuse = 0;
+    unsigned int numSpecular = 0;
+
+    for (unsigned int i = 0; i < textures.size(); i++)
+    {
+        glActiveTexture(GL_TEXTURE0 + i);
+        std::string number;
+        std::string name = textures[i].type;
+        if (name == "texture_diffuse")
+        {
+            number = std::to_string(numDiffuse++);
+        }
+        else if (name == "texture_specular")
+        {
+            number = std::to_string(numSpecular++);
+        }
+        textures[i].texUnit(shaderProgram, (name + number).c_str(), i);
+        textures[i].Bind();
+    }
+    
     // Export the view matrix to the Vertex Shader
     glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
     // Export the camMatrix to the Vertex Shader of the light cube

@@ -118,20 +118,22 @@ int main()
 	// Enables the Depth Buffer
 	glEnable(GL_DEPTH_TEST);
 
+	Texture textures[] =
+	{
+		Texture("Textures/dirt.png", "diffuse", 0, GL_RGB, GL_UNSIGNED_BYTE),
+		Texture("Textures/dirtSpecular.png", "specular", 1, GL_RED, GL_UNSIGNED_BYTE)
+	};
+
 	// Create the pyramid
 	// Initialize the shader program
 	Shader pyramidShader("default.vert", "default.frag");
 	// Initialize the texture
-	Texture pyramidTexture("Textures/dirt.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGB, GL_UNSIGNED_BYTE);
-	Texture pyramidTextureSpecular("Textures/dirtSpecular.png", GL_TEXTURE_2D, GL_TEXTURE1, GL_RED, GL_UNSIGNED_BYTE);
-	pyramidTexture.texUnit(pyramidShader, "tex0", 0);
-	pyramidTextureSpecular.texUnit(pyramidShader, "tex1", 1);
+	
 	// Create the pyramid object
 	std::vector<Vertex> verticesVector(std::begin(verticesV), std::end(verticesV));
 	std::vector<GLuint> indicesVector(std::begin(indices), std::end(indices));
-	ObjectMesh* pyramidObject = new ObjectMesh(verticesVector, indicesVector, pyramidShader, pyramidTexture);
-	// Create the pyramid mesh
-	pyramidObject->CreateMesh();
+	std::vector<Texture> pyramidTexture(std::begin(textures), std::end(textures));
+	ObjectMesh* pyramidObject = new ObjectMesh(verticesVector, indicesVector, pyramidTexture, pyramidShader);
 
 	// Create the light
 	// Initialize the shader program
@@ -139,7 +141,7 @@ int main()
 	// Create the light object
 	std::vector<Vertex> lightVerticesVector(std::begin(lightVertiesV), std::end(lightVertiesV));
 	std::vector<GLuint> lightIndicesVector(std::begin(lightIndices), std::end(lightIndices));
-	ObjectMesh* lightObject = new ObjectMesh(lightVerticesVector, lightIndicesVector, lightShader, pyramidTexture);
+	ObjectMesh* lightObject = new ObjectMesh(lightVerticesVector, lightIndicesVector, pyramidTexture, lightShader);
 	// Create the light mesh
 	lightObject->CreateMesh();
 

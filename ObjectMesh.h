@@ -12,15 +12,16 @@
 class ObjectMesh
 {
 public:
-    ObjectMesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shaderProgram, Texture& texture);
+    ObjectMesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, std::vector<Texture>& textures,
+               Shader& shaderProgram);
     ~ObjectMesh();
 
     Shader shaderProgram;
-    Texture texture;
 
     glm::vec3 currentPosition;
     std::vector <Vertex> vertices;
     std::vector <GLuint> indices;
+    std::vector <Texture> textures;
 
     void CreateMesh();
     void MoveObject(glm::vec3 direction, float speed);
