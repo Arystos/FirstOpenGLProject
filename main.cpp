@@ -174,9 +174,6 @@ int main()
 		// Orbit the light object on the y axis
 		lightObject->OrbitObject(glm::vec3(0.0f, 0.5f, 0.0f), 1.0f, 0.7f);
 		
-		// Binds texture so that is appears in rendering
-		pyramidTexture.Bind();
-		pyramidTextureSpecular.Bind();
 		// Draw the pyramid
 		pyramidObject->RenderMesh(camera, sizeof(indices)/sizeof(int));
 		// Update the light position
