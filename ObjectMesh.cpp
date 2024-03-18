@@ -56,25 +56,26 @@ void ObjectMesh::CreateMesh()
     ebo.Unbind();
 }
 
+// Render the object mesh
 void ObjectMesh::RenderMesh(Camera& camera, GLsizei size)
 {
-    // Render the object mesh
     // Activate the shader program
     shaderProgram.Activate();
-    glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
-    // Bind the texture
-    texture.Bind();
     // Bind the object VAO
     vao->Bind();
-    // camera matrix
+    // Bind the texture
+    texture.Bind();
+    // Export the view matrix to the Vertex Shader
+    glUniform3f(glGetUniformLocation(shaderProgram.ID, "camPos"), camera.Position.x, camera.Position.y, camera.Position.z);
+    // Export the camMatrix to the Vertex Shader of the light cube
     camera.Matrix(shaderProgram, "camMatrix");
     // Draw the object
     glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 }
 
-void ObjectMesh::RotateObject(glm::vec3 rotation, float speed, float angle)
+void ObjectMesh::RotateObject(glm::vec3 rotation)
 {
-    // TODO: Implement the rotation of the object
+    //TODO: Implement the rotation of the object
 }
 
 
@@ -85,7 +86,6 @@ void ObjectMesh::SpawnObject(char type, glm::vec3 position, glm::vec3 scale, glm
     glm::mat4 model = glm::mat4(1.0f); // Set to identity
     
     glm::vec4 lightColor = glm::vec4(1.0, 1.0, 1.0, 1.0);
-    glm::vec3 lightPos;
     model = translate(model, position); // Change the position of the object
     model = glm::scale(model, scale); // Change the scale of the object
     model = rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)); // Rotate the object on the x axis
@@ -95,9 +95,12 @@ void ObjectMesh::SpawnObject(char type, glm::vec3 position, glm::vec3 scale, glm
     // Set the model matrix in the shader
     shaderProgram.Activate();
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-    SetLightColor(lightColor);
 
-    if (type != LIGHT)
+    if ((type = LIGHT))
+    {
+        SetLightColor(lightColor);
+    }
+    else
     {
         SetLightPosition(position);
     }

@@ -15,6 +15,9 @@ public:
     ObjectMesh(std::vector<Vertex>& vertices, std::vector<GLuint>& indices, Shader& shaderProgram, Texture& texture);
     ~ObjectMesh();
 
+    Shader shaderProgram;
+    Texture texture;
+
     glm::vec3 currentPosition;
     std::vector <Vertex> vertices;
     std::vector <GLuint> indices;
@@ -23,14 +26,12 @@ public:
     void MoveObject(glm::vec3 direction, float speed);
     void OrbitObject(glm::vec3 center, float radius, float speed);
     void RenderMesh(Camera& camera, GLsizei size);
-    void RotateObject(glm::vec3 rotation, float speed, float angle);
+    void RotateObject(glm::vec3 rotation);
     void SetLightPosition(glm::vec3 vec);
     void SetLightColor(glm::vec4 vec);
     void SpawnObject(char type, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation);
 
 private:
-    Shader shaderProgram;
-    Texture texture;
     VAO* vao;
 };
 

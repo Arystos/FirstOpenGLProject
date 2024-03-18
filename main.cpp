@@ -146,7 +146,7 @@ int main()
 	glm::vec3 lightPos = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	// Spawn the light
-	lightObject->SpawnObject(LIGHT, lightPos, glm::vec3(1.0f), glm::vec3(0.0f));
+	lightObject->SpawnObject(LIGHT, lightPos, glm::vec3(1.0f), glm::vec3(90.0f));
 	// Spawn the pyramid
 	pyramidObject->SpawnObject(PYRAMID, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f));
 	
@@ -166,30 +166,20 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// Update the camera view
 		camera.Inputs(window);
-		// Update camera
+		// Update camera (projection, near plane, far plane)
 		camera.updateMatrix(45.0f, 0.1f, 100.0f);
-
-		// Tells OpenGL to use the light shader program
-		lightShader.Activate();
-		// Export the camMatrix to the Vertex Shader of the light cube
-		camera.Matrix(lightShader, "camMatrix");
+		
 		// Bind the VAO so OpenGL knows to use it
 		lightObject->RenderMesh(camera, sizeof(lightIndices) / sizeof(int));
+		// Orbit the light object on the y axis
+		lightObject->OrbitObject(glm::vec3(0.0f, 0.5f, 0.0f), 1.0f, 0.7f);
 		
-		// Use the shader program
-		pyramidShader.Activate();
-		// Update camera matrix
-		camera.Matrix(pyramidShader, "camMatrix");
 		// Binds texture so that is appears in rendering
 		pyramidTexture.Bind();
 		pyramidTextureSpecular.Bind();
 		// Draw the pyramid
 		pyramidObject->RenderMesh(camera, sizeof(indices)/sizeof(int));
-		
-		// Orbit the light object on the y axis
-		lightObject->OrbitObject(glm::vec3(0.0f, 0.5f, 0.0f), 1.0f, 0.7f);
-
-		// Set light position
+		// Update the light position
 		pyramidObject->SetLightPosition(lightObject->currentPosition);
 		
 		// Swap the back buffer with the front buffer
