@@ -17,7 +17,7 @@ constexpr unsigned int height = 800;
 constexpr char PYRAMID = 0;
 constexpr char LIGHT = 1;
 
-// Vertex ddata
+// Vertex data
 Vertex verticesV [] =
 {
 	// Positions, Colors, Texture Coords, Normals
@@ -97,8 +97,8 @@ int main()
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
-	GLFWwindow* window = glfwCreateWindow(width, height, "YoutubeOpenGL", NULL, NULL);
+	// Create a GLFWwindow object of 800 by 800 pixels, naming it "MammaMiaEngine"
+	GLFWwindow* window = glfwCreateWindow(width, height, "MammaMiaEngine", NULL, NULL);
 	// Error check if the window fails to create
 	if (window == NULL)
 	{
@@ -152,7 +152,7 @@ int main()
 	// Spawn the pyramid
 	pyramidObject->SpawnObject(PYRAMID, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(0.0f));
 	
-	// Pass the light position to the fragment shader
+	// Pass the light position to the fragment shader (?)
 	pyramidObject->SetLightPosition(lightPos);
 
 	
@@ -173,13 +173,14 @@ int main()
 		
 		// Bind the VAO so OpenGL knows to use it
 		lightObject->RenderMesh(camera, sizeof(lightIndices) / sizeof(int));
-		// Orbit the light object on the y axis
+		// Orbit the light object on the y axys
 		lightObject->OrbitObject(glm::vec3(0.0f, 0.5f, 0.0f), 1.0f, 0.7f);
 		
 		// Draw the pyramid
 		pyramidObject->RenderMesh(camera, sizeof(indices)/sizeof(int));
 		// Update the light position
 		pyramidObject->SetLightPosition(lightObject->currentPosition);
+		
 		
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
