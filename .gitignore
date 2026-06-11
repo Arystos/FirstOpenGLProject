@@ -1,0 +1,29 @@
+# ---- Build output ----
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.exe
+*.pdb
+*.ilk
+*.obj
+*.idb
+*.log
+*.tlog
+*.recipe
+*.lastbuildstate
+*.exe.recipe
+
+# ---- Visual Studio ----
+.vs/
+*.user
+*.suo
+*.VC.db
+*.VC.VC.opendb
+
+# ---- JetBrains (Rider / CLion) ----
+.idea/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
